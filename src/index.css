@@ -36,11 +36,12 @@ a {
   --login-btn-bgclr: #ffffff;
   --ctrl-btns-clr: #ffd050;
   --lyt-txt-clr: #ffffff;
-  --txt-clr: 35, 37, 54;
+  --txt-dark: 35, 37, 54;
+  --txt-light: 255, 255, 255;
 }
 
 .container {
-  max-width: 1300px;
+  max-width: 1433px;
   padding: 0 50px;
   margin: 0 auto;
 }
@@ -53,6 +54,6 @@ a {
 
 @media (max-width: 470px) {
   .container {
-    padding: 0 7px;
+    padding: 0 10px;
   }
 }

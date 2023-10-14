@@ -6,9 +6,14 @@ import "./header.scss";
 const Header = () => {
   const [togle, setTogle] = useState(false);
 
-  const togleOpen = () => setTogle(true);
-
-  const togleClose = () => setTogle(false);
+  const togleOpen = () => {
+    setTogle(true);
+    document.body.style.overflow = "hidden";
+  };
+  const togleClose = () => {
+    setTogle(false);
+    document.body.style.overflow = "auto";
+  };
 
   return (
     <Fragment>
@@ -119,13 +124,14 @@ const Header = () => {
 
       <div className={`togle ${togle ? "show" : ""}`}>
         <div className="togle__list">
-          <div className="togle__close" onClick={togleClose}>
+          <div className="togle__close">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
               height="17"
               viewBox="0 0 18 17"
               fill="none"
+              onClick={togleClose}
             >
               <path
                 fillRule="evenodd"
@@ -135,22 +141,23 @@ const Header = () => {
               />
             </svg>
           </div>
-          <NavLink className="togle__link" to="/">
+          <NavLink className="togle__link" to="/" onClick={togleClose}>
             Home
           </NavLink>
-          <NavLink className="togle__link" to="/blog">
+          <NavLink className="togle__link" to="/blog" onClick={togleClose}>
             Blog
           </NavLink>
-          <NavLink className="togle__link" to="/aboutUs">
+          <NavLink className="togle__link" to="/aboutUs" onClick={togleClose}>
             About us
           </NavLink>
-          <NavLink className="togle__link" to="/register">
+          <NavLink className="togle__link" to="/register" onClick={togleClose}>
             Register
           </NavLink>
           <NavLink
             className="togle__link"
             style={{ backgroundColor: "var(lyt-txt-clr)" }}
             to="/login"
+            onClick={togleClose}
           >
             Login
           </NavLink>
