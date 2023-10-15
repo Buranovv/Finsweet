@@ -31,6 +31,9 @@ li {
 a {
   text-decoration: none;
 }
+input {
+  outline: none;
+}
 :root {
   --lyt-bgclr: #232536;
   --login-btn-bgclr: #ffffff;

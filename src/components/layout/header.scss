@@ -5,6 +5,10 @@
   position: relative;
   z-index: 999;
 
+  .active {
+    color: #ffd050;
+  }
+
   &__box {
     display: flex;
     align-items: center;
@@ -32,6 +36,7 @@
   }
   &__loginPage {
     padding: 16px 48px;
+    border-radius: 5px;
 
     background: var(--login-btn-bgclr);
 
@@ -39,6 +44,11 @@
     font-family: Sen;
     font-size: 18px;
     line-height: 24px;
+  }
+
+  &__loginPage:active {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 15px 15px -12px inset,
+      rgba(0, 0, 0, 0.3) 0px 15px 15px -10px inset;
   }
 }
 .shadow {
@@ -69,6 +79,10 @@
   display: none;
 
   transition: all 0.3s ease-in-out;
+
+  .active {
+    color: #ffd050;
+  }
 
   &__menu {
     display: none;

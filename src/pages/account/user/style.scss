@@ -1,0 +1,23 @@
+.account {
+  padding: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-btn {
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+
+  background: #ffd050;
+
+  color: #232536;
+  font-family: Sen;
+  font-size: 32px;
+  line-height: 36px;
+  letter-spacing: -2px;
+
+  cursor: pointer;
+}

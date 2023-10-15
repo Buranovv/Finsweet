@@ -1,0 +1,42 @@
+#page-loading {
+  position: fixed;
+  top: 86px;
+  left: 0;
+  height: 5px;
+  display: block;
+  background-color: #fff;
+  width: 100%;
+  box-shadow: 0 -1px 4px 0 #000;
+  z-index: 1000;
+  animation: pageOnLoad 4.5s;
+  -webkit-animation: pageOnLoad 4.5s;
+  animation-timing-function: ease-in-out;
+}
+@keyframes pageOnLoad {
+  0% {
+    width: 0;
+    top: 0;
+  }
+  25% {
+    width: 30%;
+    top: 0;
+  }
+  75% {
+    width: 80%;
+    top: 0;
+  }
+}
+@-webkit-keyframes pageOnLoad {
+  0% {
+    width: 0;
+    top: 0;
+  }
+  25% {
+    width: 30%;
+    top: 0;
+  }
+  75% {
+    width: 80%;
+    top: 0;
+  }
+}

@@ -68,3 +68,18 @@
     }
   }
 }
+
+@media (max-width: 500px) {
+  .footer {
+    &__address {
+      p {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+    svg {
+      width: 25px;
+      height: 25px;
+    }
+  }
+}
