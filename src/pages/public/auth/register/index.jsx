@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 
-import "../style.scss";
 import request from "../../../../server";
 import { useContext } from "react";
 import { AuthContext } from "../../../../context/AuthContext";
 import { ROLE, TOKEN } from "../../../../constants";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+
+import "../style.scss";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ const RegisterPage = () => {
         navigate("/dashboard");
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data);
     }
   };
   console.log(errors);
