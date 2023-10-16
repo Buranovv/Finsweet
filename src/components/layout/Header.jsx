@@ -170,14 +170,25 @@ const Header = () => {
           <NavLink className="togle__link" to="/register" onClick={togleClose}>
             Register
           </NavLink>
-          <NavLink
-            className="togle__link"
-            style={{ backgroundColor: "var(lyt-txt-clr)" }}
-            to="/login"
-            onClick={togleClose}
-          >
-            Login
-          </NavLink>
+          {isAuth ? (
+            <NavLink
+              className="togle__link"
+              style={{ backgroundColor: "var(lyt-txt-clr)" }}
+              to="/acount"
+              onClick={togleClose}
+            >
+              Account
+            </NavLink>
+          ) : (
+            <NavLink
+              className="togle__link"
+              style={{ backgroundColor: "var(lyt-txt-clr)" }}
+              to="/login"
+              onClick={togleClose}
+            >
+              Login
+            </NavLink>
+          )}
         </div>
       </div>
     </Fragment>
