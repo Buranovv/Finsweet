@@ -167,9 +167,15 @@ const Header = () => {
           <NavLink className="togle__link" to="/aboutUs" onClick={togleClose}>
             About us
           </NavLink>
-          <NavLink className="togle__link" to="/register" onClick={togleClose}>
-            Register
-          </NavLink>
+          {isAuth ? null : (
+            <NavLink
+              className="togle__link"
+              to="/register"
+              onClick={togleClose}
+            >
+              Register
+            </NavLink>
+          )}
           {isAuth ? (
             <NavLink
               className="togle__link"
