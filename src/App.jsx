@@ -1,11 +1,10 @@
-import { BrowserRouter,  Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import FrontLayout from "./components/layout";
 import HomePage from "./pages/public/home";
 import AboutPage from "./pages/public/about";
 import BlogPage from "./pages/public/blog";
 import SinglePage from "./pages/public/single";
 import CategoryPage from "./pages/public/category";
-import AllPostsPage from "./pages/public/allPosts/AllPostsPage";
 import RegisterPage from "./pages/public/auth/register";
 import LoginPage from "./pages/public/auth/login";
 import { useContext } from "react";
@@ -25,9 +24,7 @@ function App() {
           <Route path="" element={<HomePage />} />
           {isAuth === true && role === "user" ? (
             <Route path="myPosts" element={<MyPostsPage />} />
-          ) : (
-            <Route path="allPosts" element={<AllPostsPage />} />
-          )}
+          ) : null}
           <Route path="/:postId" element={<SinglePage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:ctgrId" element={<CategoryPage />} />
