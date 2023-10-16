@@ -174,7 +174,7 @@ const Header = () => {
             <NavLink
               className="togle__link"
               style={{ backgroundColor: "var(lyt-txt-clr)" }}
-              to="/acount"
+              to="/account"
               onClick={togleClose}
             >
               Account
