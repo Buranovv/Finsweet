@@ -138,13 +138,9 @@ const AccountPage = () => {
               <input
                 className="img-input"
                 type="file"
-                {...register("photo", {
-                  required: "This field must not be empty!",
-                })}
                 id="img"
                 onChange={uploadPhoto}
               />
-              {errors.photo ? <p>{errors.photo?.message}</p> : null}
             </div>
             {loading ? (
               <Loader />
