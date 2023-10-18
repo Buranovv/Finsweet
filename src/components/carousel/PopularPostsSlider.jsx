@@ -5,8 +5,7 @@ import { PopularBlogsContext } from "../../context/PopularBlogsContext";
 import Loader from "../shared/loader";
 
 const PopularPostsSlider = () => {
-  const { popPosts, loading, photoId, photoName } =
-    useContext(PopularBlogsContext);
+  const { popPosts, loading } = useContext(PopularBlogsContext);
 
   let settings = {
     autoplay: true,
@@ -43,14 +42,7 @@ const PopularPostsSlider = () => {
         {loading ? (
           <Loader />
         ) : (
-          popPosts.map((post, i) => (
-            <PopularPostsCard
-              key={i}
-              {...post}
-              photoId={photoId}
-              photoName={photoName}
-            />
-          ))
+          popPosts.map((post, i) => <PopularPostsCard key={i} {...post} />)
         )}
       </Slider>
     </div>

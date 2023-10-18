@@ -11,13 +11,17 @@ const PopularPostsCard = ({
   description,
   createdAt,
   user: { first_name, last_name },
-  photoId: imgId,
+  photo,
 }) => {
   let date = new Date(createdAt).toString().split(" ").slice(1, 4);
 
   const errorHandler = (error) => {
     error.target.src = "/icon.png";
   };
+
+  const photoType = photo?.name?.split(".")[1];
+  const photoId = photo?._id;
+  const photo2 = `${photoId}.${photoType}`;
 
   return (
     <Link to={`/${_id}`}>
@@ -26,9 +30,7 @@ const PopularPostsCard = ({
           <LazyLoadImage
             effect="blur"
             className="postsCard__img"
-            src={`${IMG_URL}/${imgId}.${
-              first_name === "Zahiriddin" ? "png" : "jpg"
-            }`}
+            src={`${IMG_URL}${photo2}`}
             alt=""
             onError={errorHandler}
           />
@@ -52,8 +54,7 @@ PopularPostsCard.propTypes = {
   description: PropTypes.string,
   createdAt: PropTypes.string,
   user: PropTypes.object,
-  photoName: PropTypes.string,
-  photoId: PropTypes.string,
+  photo: PropTypes.object,
 };
 
 export default PopularPostsCard;
