@@ -43,6 +43,9 @@ select {
   --txt-dark: 35, 37, 54;
   --txt-light: 255, 255, 255;
 }
+main {
+  margin-top: 86px;
+}
 
 .container {
   max-width: 1433px;
@@ -50,9 +53,18 @@ select {
   margin: 0 auto;
 }
 
+@media (max-width: 835px) {
+  main {
+    margin-top: 70px;
+  }
+}
+
 @media (max-width: 650px) {
   .container {
     padding: 0 35px;
+  }
+  main {
+    margin-top: 50.71px;
   }
 }
 

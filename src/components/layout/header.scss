@@ -1,9 +1,11 @@
 .header {
+  width: 100%;
   padding: 13px 0;
   background-color: var(--lyt-bgclr);
 
-  position: relative;
+  position: fixed;
   z-index: 999;
+  top: 0;
 
   .active {
     color: #ffd050;
