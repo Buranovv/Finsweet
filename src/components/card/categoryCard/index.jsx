@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import "./style.scss";
 import { Link } from "react-router-dom";
 import { IMG_URL } from "../../../constants";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const CategoryCard = ({ name, description, _id, photo: { _id: photoId } }) => {
   return (
     <Link to={`/blog/${_id}`}>
       <div className="categoryCard">
-        <img
+        <LazyLoadImage
+          effect="blur"
           className="categoryCard__img"
           src={`${IMG_URL}/${photoId}.jpg`}
           alt=""

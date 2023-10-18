@@ -5,7 +5,18 @@ import "./style.scss";
 const Loader = () => {
   return (
     <Fragment>
-      <div id="page-loading"></div>
+      <div className="center">
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+      </div>
     </Fragment>
   );
 };

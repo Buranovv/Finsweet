@@ -1,0 +1,152 @@
+.allPostsCard {
+  max-width: 100%;
+  margin-bottom: 40px;
+
+  display: flex;
+  align-items: start;
+  gap: 50px;
+
+  &__img-box {
+    width: 450px;
+
+    img {
+      width: 450px;
+      height: 300px;
+    }
+  }
+  &__body {
+    width: 100%;
+  }
+  &__ctgr {
+    margin-bottom: 20px;
+
+    color: #592ea9;
+
+    font-family: InterM;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  &__title {
+    margin-bottom: 60px;
+
+    color: rgb(var(--txt-dark));
+
+    font-family: Sen;
+    font-size: 36px;
+    line-height: 48px;
+    letter-spacing: -2px;
+  }
+  &__desc {
+    height: 90px;
+
+    color: #6d6e76;
+
+    font-family: InterR;
+    font-size: 16px;
+    line-height: 28px;
+
+    overflow: hidden;
+  }
+}
+
+.delete,
+.edit {
+  border: none;
+  margin-right: 20px;
+  border-radius: 5px;
+  padding: 10px;
+
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.delete {
+  background: red;
+}
+.edit {
+  background: blue;
+}
+
+@media (max-width: 1024px) {
+  .allPostsCard {
+    margin-bottom: 35px;
+
+    &__img-box {
+      width: 350px;
+
+      img {
+        width: 350px;
+        height: 200px;
+      }
+    }
+    &__ctgr {
+      margin-bottom: 15px;
+
+      font-size: 14px;
+      line-height: 18px;
+    }
+    &__title {
+      margin-bottom: 25px;
+
+      font-size: 30px;
+      line-height: 36px;
+    }
+    &__desc {
+      height: 90px;
+
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+}
+
+@media (max-width: 830px) {
+  .allPostsCard {
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+
+    text-align: center;
+
+    &__ctgr {
+      margin-bottom: 10px;
+
+      font-size: 12px;
+      line-height: 18px;
+    }
+    &__title {
+      margin-bottom: 15px;
+
+      font-size: 28px;
+      line-height: 30px;
+    }
+
+    &__desc {
+      max-width: 500px;
+      height: 70px;
+      margin: 0 auto;
+
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .allPostsCard {
+    gap: 10px;
+
+    &__desc {
+      max-width: 350px;
+      height: 70px;
+      margin: 0 auto;
+
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+}

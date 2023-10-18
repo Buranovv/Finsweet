@@ -2,9 +2,10 @@ import { useContext } from "react";
 import { AllPostsContext } from "../../../context/AllPostsContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import "./style.scss";
 import Loader from "../../../components/shared/loader";
 import PostsCard from "../../../components/card/postsCard";
+
+import "./style.scss";
 
 const BlogPage = () => {
   const { posts, loading, handleSearch, refetchData, hasMore } =

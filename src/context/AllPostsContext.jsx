@@ -25,7 +25,6 @@ const AllPostsContextProvider = ({ children }) => {
         setPosts(data1);
         setPage(pagination.next);
         setTotal(pagination.total);
-        console.log(data1);
       };
       getAllPosts();
     } catch (error) {

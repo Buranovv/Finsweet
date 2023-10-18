@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 
 import { IMG_URL } from "../../../constants";
 import "./style.scss";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const SingleCard = ({
   title,
@@ -18,12 +19,21 @@ const SingleCard = ({
   return (
     <div className="singleCard">
       <div className="singleCard__img-box">
-        <img src={`${IMG_URL}${photoId}.jpg`} alt="" />
+        <LazyLoadImage
+          className="singleImg"
+          effect="blur"
+          src={`${IMG_URL}${photoId}.jpg`}
+          alt=""
+        />
       </div>
       <div className="singleCard__body">
         <div className="singleCard__body-box">
           <div className="singleCard__owner">
-            <img src={`${IMG_URL}${ownerPhoto}`} alt="" />
+            <LazyLoadImage
+              effect="blur"
+              src={`${IMG_URL}${ownerPhoto}`}
+              alt=""
+            />
             <div className="singleCard__owner-content">
               <h6>{first_name + " " + last_name}</h6>
               <p>Posted on {`${date[1]} ${date[0]} ${date[2]}`}</p>
@@ -43,6 +53,7 @@ const SingleCard = ({
 SingleCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
+  tags: PropTypes.array,
   createdAt: PropTypes.string,
   photoId: PropTypes.string,
   ctgrName: PropTypes.string,

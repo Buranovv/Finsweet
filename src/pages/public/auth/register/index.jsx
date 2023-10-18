@@ -50,17 +50,19 @@ const RegisterPage = () => {
       toast.error(error.response.data);
     }
   };
-  console.log(errors);
 
   const password = watch("password");
 
   return (
-    <section className="login">
+    <section className="register">
       <div className="container">
         <h2 className="sectionTitle">Register</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <input
+              style={{
+                border: `1px solid ${errors.first_name ? "red" : ""}`,
+              }}
               className="firstName"
               {...register("first_name", {
                 required: "Firstname is required!",
@@ -72,6 +74,9 @@ const RegisterPage = () => {
           </div>
           <div>
             <input
+              style={{
+                border: `1px solid ${errors.last_name ? "red" : ""}`,
+              }}
               className="lastName"
               type="text"
               {...register("last_name", {
@@ -83,6 +88,9 @@ const RegisterPage = () => {
           </div>
           <div>
             <input
+              style={{
+                border: `1px solid ${errors.username ? "red" : ""}`,
+              }}
               className="username"
               type="text"
               {...register("username", {
@@ -94,6 +102,9 @@ const RegisterPage = () => {
           </div>
           <div>
             <input
+              style={{
+                border: `1px solid ${errors.password ? "red" : ""}`,
+              }}
               className="password"
               type="password"
               {...register("password", {
@@ -109,6 +120,9 @@ const RegisterPage = () => {
           </div>
           <div>
             <input
+              style={{
+                border: `1px solid ${errors.confirmPassword ? "red" : ""}`,
+              }}
               className="password"
               type="password"
               {...register("confirmPassword", {

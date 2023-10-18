@@ -5,22 +5,25 @@ import request from "../../../server";
 import PopularPostsSlider from "../../../components/carousel/PopularPostsSlider";
 import CategorySlider from "../../../components/carousel/CategorySlider";
 import { Link } from "react-router-dom";
+import Loader from "../../../components/shared/loader";
 
 const HomePage = () => {
   const [latestPost, setLatestPost] = useState({});
   const [userName, setUserName] = useState("");
   const { title, description, createdAt, _id } = latestPost;
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getLatestOne = async () => {
       try {
+        setLoading(true);
         const { data } = await request.get("post/lastone");
-
         setUserName(data.user.first_name + " " + data.user.last_name);
-
         setLatestPost(data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -34,22 +37,28 @@ const HomePage = () => {
       <section className="hero">
         <div className="container">
           <div>
-            <div className="hero__box">
-              <p className="hero__posted">
-                Posted on <span>Sturtup</span>
-              </p>
-              <h2 className="hero__title">{title}</h2>
-              <div className="hero__content">
-                <p className="hero__date">
-                  By <span>{userName}</span> |{" "}
-                  {`${date[0]} ${date[1]}, ${date[2]}`}
-                </p>
-                <p className="hero__description">{description}</p>
-              </div>
-            </div>
-            <Link to={`/${_id}`} className="hero__btn">
-              {"Read More >"}
-            </Link>
+            {loading ? (
+              <Loader className="hero__loader" />
+            ) : (
+              <Fragment>
+                <div className="hero__box">
+                  <p className="hero__posted">
+                    Posted on <span>Sturtup</span>
+                  </p>
+                  <h2 className="hero__title">{title}</h2>
+                  <div className="hero__content">
+                    <p className="hero__date">
+                      By <span>{userName}</span> |{" "}
+                      {`${date[0]} ${date[1]}, ${date[2]}`}
+                    </p>
+                    <p className="hero__description">{description}</p>
+                  </div>
+                </div>
+                <Link to={`/${_id}`} className="hero__btn">
+                  {"Read More >"}
+                </Link>
+              </Fragment>
+            )}
           </div>
         </div>
       </section>

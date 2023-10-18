@@ -9,8 +9,6 @@
     rgba(0, 0, 0, 0.6) 100%
   );
 
-  overflow: hidden;
-
   color: rgb(var(--txt-light));
 
   &__box {
@@ -220,8 +218,6 @@
 @media (max-width: 400px) {
   .sectionTitle {
     margin-bottom: 20px;
-
-   
   }
   .hero {
     padding: 40px 0 70px 0;

@@ -12,7 +12,7 @@ import { AuthContext } from "./context/AuthContext";
 import MyPostsPage from "./pages/user/my-posts/MyPostsPage";
 import DashboardPage from "./pages/admin/dashboard/DashboardPage";
 import NotFoundPage from "./pages/public/notFound/NotFoundPage";
-import AccountPage from "./pages/account/user/AccountPage";
+import AccountPage from "./pages/account/AccountPage";
 
 function App() {
   const { isAuth, role } = useContext(AuthContext);
@@ -29,7 +29,7 @@ function App() {
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:ctgrId" element={<CategoryPage />} />
           <Route path="aboutUs" element={<AboutPage />} />
-          <Route path="register" element={<RegisterPage />} />
+          {isAuth ? null : <Route path="register" element={<RegisterPage />} />}
           {isAuth ? (
             <Route path="account" element={<AccountPage />} />
           ) : (
@@ -37,7 +37,7 @@ function App() {
           )}
         </Route>
         {isAuth && role === "admin" ? (
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
         ) : null}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

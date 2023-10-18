@@ -1,100 +1,104 @@
-.login {
+.login,
+.register {
   padding: 70px 0;
   text-align: center;
+}
+.form {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
-  form {
-    max-width: 700px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  text-align: start;
 
-    text-align: start;
+  p {
+    color: red;
+  }
 
-    p {
-      color: red;
-    }
+  input,
+  button,
+  select {
+    width: 100%;
+  }
 
-    input,
-    button {
-      width: 100%;
-    }
+  input,
+  select {
+    padding: 24px;
+
+    color: rgb(var(--txt-dark));
+
+    font-family: InterR;
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+  button {
+    margin-top: 30px;
+    padding: 16px 0;
+    border: none;
+
+    background: #ffd050;
+
+    color: rgb(var(--txt-dark));
+    font-family: Sen;
+    font-size: 24px;
+    line-height: 32px;
+
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 1024px) {
+  .login,
+  .register {
+    padding: 50px 0;
+  }
+}
+
+@media (max-width: 835px) {
+  .login,
+  .register {
+    padding: 50px 0;
+  }
+  .form {
+    max-width: 100%;
+    gap: 15px;
 
     input {
-      padding: 24px;
+      padding: 17px;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .login,
+  .register {
+    padding: 30px 0;
+  }
+
+  .form {
+    input {
+      padding: 15px;
 
       color: rgb(var(--txt-dark));
 
       font-family: InterR;
-      font-size: 16px;
-      line-height: 28px;
+      font-size: 14px;
+      line-height: 20px;
     }
 
     button {
-      margin-top: 30px;
-      padding: 16px 0;
+      margin-top: 15px;
+      padding: 10px 0;
       border: none;
 
       background: #ffd050;
 
       color: rgb(var(--txt-dark));
       font-family: Sen;
-      font-size: 24px;
-      line-height: 32px;
-
-      cursor: pointer;
-    }
-  }
-}
-
-@media (max-width: 1024px) {
-  .login {
-    padding: 50px 0;
-  }
-}
-
-@media (max-width: 835px) {
-  .login {
-    padding: 50px 0;
-
-    form {
-      max-width: 100%;
-      gap: 15px;
-
-      input {
-        padding: 17px;
-      }
-    }
-  }
-}
-
-@media (max-width: 650px) {
-  .login {
-    padding: 30px 0;
-
-    form {
-      input {
-        padding: 15px;
-
-        color: rgb(var(--txt-dark));
-
-        font-family: InterR;
-        font-size: 14px;
-        line-height: 20px;
-      }
-
-      button {
-        margin-top: 15px;
-        padding: 10px 0;
-        border: none;
-
-        background: #ffd050;
-
-        color: rgb(var(--txt-dark));
-        font-family: Sen;
-        font-size: 16px;
-        line-height: 20px;
-      }
+      font-size: 16px;
+      line-height: 20px;
     }
   }
 }

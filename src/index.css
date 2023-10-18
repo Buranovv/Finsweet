@@ -31,7 +31,8 @@ li {
 a {
   text-decoration: none;
 }
-input {
+input,
+select {
   outline: none;
 }
 :root {

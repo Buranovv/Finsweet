@@ -7,8 +7,6 @@ import CategoryCard from "../card/categoryCard";
 const CategorySlider = () => {
   const { loading, categories } = useContext(PopularBlogsContext);
 
-  console.log(categories);
-
   let settings = {
     autoplay: true,
     autoplaySpeed: 3000,

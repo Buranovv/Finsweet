@@ -4,19 +4,26 @@ import { Link } from "react-router-dom";
 import { IMG_URL } from "../../../constants";
 
 import "./style.scss";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const PostsCard = ({
   _id,
   title,
   description,
-  photo: { _id: photoId },
+  photo: { _id: photoId, name: photoName },
   category: { name },
 }) => {
+  let typeOfPhoto = photoName.split(".")[1];
+
   return (
     <Link to={`/${_id}`}>
       <div className="allPostsCard">
         <div className="allPostsCard__img-box">
-          <img src={`${IMG_URL}/${photoId ? photoId : ""}.jpg`} alt="" />
+          <LazyLoadImage
+            effect="blur"
+            src={`${IMG_URL}/${photoId ? photoId : ""}.${typeOfPhoto}`}
+            alt=""
+          />
         </div>
         <div className="allPostsCard__body">
           <p className="allPostsCard__ctgr">{name ? name : ""}</p>

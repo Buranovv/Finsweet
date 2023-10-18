@@ -1,0 +1,46 @@
+.posts {
+  &__form {
+    position: relative;
+
+    button {
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      border-bottom-left-radius: 0px;
+      border-top-left-radius: 0px;
+
+      position: absolute;
+      right: 0.7px;
+      top: 0.7px;
+
+      cursor: pointer;
+    }
+  }
+}
+
+.form-disabled {
+  opacity: 0.5;
+
+  input {
+    pointer-events: none;
+  }
+  cursor: not-allowed !important;
+}
+
+.photo__label {
+  border: 1px solid rgb(var(--txt-dark));
+  padding: 10px;
+}
+
+@media (max-width: 680px) {
+  .posts {
+    &__form {
+      button {
+        padding: 10px;
+        border-radius: 20px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
+      }
+    }
+  }
+}

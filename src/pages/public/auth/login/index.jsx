@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
-  const { setIsAuth, setRole } = useContext(AuthContext);
+  const { setIsAuth, setRole, getUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const {
@@ -32,6 +32,7 @@ const LoginPage = () => {
       console.log(data);
 
       setIsAuth(true);
+      getUser();
       setRole(role);
       Cookies.set(TOKEN, token);
       Cookies.set(ROLE, role);
@@ -49,9 +50,12 @@ const LoginPage = () => {
     <section className="login">
       <div className="container">
         <h2 className="sectionTitle">Login</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <input
+              style={{
+                border: `1px solid ${errors.username ? "red" : ""}`,
+              }}
               className="username"
               type="text"
               {...register("username", {
@@ -63,6 +67,9 @@ const LoginPage = () => {
           </div>
           <div>
             <input
+              style={{
+                border: `1px solid ${errors.password ? "red" : ""}`,
+              }}
               className="password"
               type="password"
               {...register("password", {

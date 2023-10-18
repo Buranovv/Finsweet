@@ -7,6 +7,7 @@ import AllPostsContextProvider from "./context/AllPostsContext.jsx";
 import AuthContextProvider from "./context/AuthContext.jsx";
 import { ToastContainer } from "react-toastify";
 
+import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
