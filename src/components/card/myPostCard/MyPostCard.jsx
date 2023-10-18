@@ -10,20 +10,27 @@ const MyPostCard = ({
   _id,
   title,
   description,
-  photo: { _id: photoId, name: photoName },
+  photo,
   category: { name: ctgrName },
   deletePost,
   editPost,
 }) => {
-  let typeOfPhoto = photoName.split(".")[1];
+  const photoType = photo?.name?.split(".")[1];
+  const photoId = photo?._id;
+  const photo2 = `${photoId}.${photoType}`;
+
+  const handleError = (error) => {
+    error.target.src = "/icon.png";
+  };
 
   return (
     <div className="allPostsCard">
       <div className="allPostsCard__img-box">
         <LazyLoadImage
           effect="blur"
-          src={`${IMG_URL}/${photoId ? photoId : ""}.${typeOfPhoto}`}
+          src={`${IMG_URL}${photo2}`}
           alt=""
+          onError={handleError}
         />
       </div>
       <div className="allPostsCard__body">

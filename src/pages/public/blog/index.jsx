@@ -14,8 +14,6 @@ const BlogPage = () => {
     handleSearch,
     refetchData,
     hasMore,
-    photoName,
-    photoId,
     ctgrName,
   } = useContext(AllPostsContext);
 
@@ -42,13 +40,7 @@ const BlogPage = () => {
               <Loader />
             ) : (
               posts.map((post, i) => (
-                <PostsCard
-                  key={i}
-                  {...post}
-                  photoName={photoName}
-                  ctgrName={ctgrName}
-                  photoId={photoId}
-                />
+                <PostsCard key={i} {...post} ctgrName={ctgrName} />
               ))
             )}
           </InfiniteScroll>

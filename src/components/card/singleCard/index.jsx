@@ -7,7 +7,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 const SingleCard = ({
   title,
   description,
-  photoId,
+  photo,
   ctgrName,
   createdAt,
   first_name,
@@ -16,16 +16,23 @@ const SingleCard = ({
 }) => {
   let date = new Date(createdAt).toString().split(" ").slice(1, 4);
 
+  const errorHandler = (error) => {
+    error.target.src = "/icon.png";
+  };
+
+  const photoType = photo?.name?.split(".")[1];
+  const photoId = photo?._id;
+  const photo2 = `${photoId}.${photoType}`;
+
   return (
     <div className="singleCard">
       <div className="singleCard__img-box">
         <LazyLoadImage
           className="singleImg"
           effect="blur"
-          src={`${IMG_URL}${photoId}.${
-            first_name === "Zahiriddin" ? "png" : "jpg"
-          }`}
+          src={`${IMG_URL}${photo2}`}
           alt=""
+          onError={errorHandler}
         />
       </div>
       <div className="singleCard__body">
@@ -57,7 +64,7 @@ SingleCard.propTypes = {
   description: PropTypes.string,
   tags: PropTypes.array,
   createdAt: PropTypes.string,
-  photoId: PropTypes.string,
+  photo: PropTypes.object,
   ctgrName: PropTypes.string,
   last_name: PropTypes.string,
   first_name: PropTypes.string,

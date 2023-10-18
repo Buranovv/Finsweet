@@ -6,10 +6,14 @@ import { IMG_URL } from "../../../constants";
 import "./style.scss";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-const PostsCard = ({ _id, title, description, ctgrName, photoId }) => {
+const PostsCard = ({ _id, title, description, ctgrName, photo }) => {
   const errorHandler = (error) => {
     error.target.src = "/icon.png";
   };
+
+  const photoType = photo?.name?.split(".")[1];
+  const photoId = photo?._id;
+  const photo2 = `${photoId}.${photoType}`;
 
   return (
     <Link to={`/${_id}`}>
@@ -17,7 +21,7 @@ const PostsCard = ({ _id, title, description, ctgrName, photoId }) => {
         <div className="allPostsCard__img-box">
           <LazyLoadImage
             effect="blur"
-            src={`${IMG_URL}/${photoId ? photoId : ""}.${"jpg" || "png"}`}
+            src={`${IMG_URL}${photo2}`}
             alt=""
             onError={errorHandler}
           />
@@ -36,8 +40,7 @@ PostsCard.propTypes = {
   _id: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
-  photoName: PropTypes.string,
-  photoId: PropTypes.string,
+  photo: PropTypes.object,
   ctgrName: PropTypes.string,
 };
 
