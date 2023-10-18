@@ -28,7 +28,9 @@ const PopularPostsCard = ({
           <LazyLoadImage
             effect="blur"
             className="postsCard__img"
-            src={`${IMG_URL}/${imgId}.${"jpg" || "png"}`}
+            src={`${IMG_URL}/${imgId}.${
+              first_name === "Zahiriddin" ? "png" : "jpg"
+            }`}
             alt=""
             onError={errorHandler}
           />

@@ -16,8 +16,16 @@ const CategoryPage = () => {
     "category",
     ctgrId
   );
-  const { posts, loading, handleSearch, refetchData, hasMore } =
-    useContext(AllPostsContext);
+  const {
+    posts,
+    loading,
+    handleSearch,
+    refetchData,
+    hasMore,
+    photoName,
+    photoId,
+    ctgrName,
+  } = useContext(AllPostsContext);
 
   const { name, description } = category;
 
@@ -58,7 +66,13 @@ const CategoryPage = () => {
               ) : (
                 posts.map((post, i) =>
                   post.category.name === name ? (
-                    <PostsCard key={i} {...post} />
+                    <PostsCard
+                      key={i}
+                      {...post}
+                      photoName={photoName}
+                      photoId={photoId}
+                      ctgrName={ctgrName}
+                    />
                   ) : null
                 )
               )}
