@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useState, createContext } from "react";
 import request from "../server";
+import { toast } from "react-toastify";
 
 export const PopularBlogsContext = createContext();
 
@@ -25,7 +26,7 @@ const PopularBlogsContextProvider = ({ children }) => {
         setPopPosts(data);
         setCategories(categories);
       } catch (error) {
-        console.log(error);
+        toast.error(error);
       } finally {
         setLoading(false);
       }

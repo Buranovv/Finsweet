@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { ROLE, TOKEN } from "../constants";
 import Cookies from "js-cookie";
 import request from "../server";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
@@ -19,7 +20,7 @@ const AuthContextProvider = ({ children }) => {
       const { data } = await request.get("auth/me");
       setUser(data);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setLoading(false);
     }

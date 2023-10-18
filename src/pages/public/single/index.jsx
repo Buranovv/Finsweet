@@ -16,7 +16,6 @@ const SinglePage = () => {
     loading,
   } = useSingleData("post", postId);
 
-  console.log(post);
   return (
     <section>
       <div className="container">

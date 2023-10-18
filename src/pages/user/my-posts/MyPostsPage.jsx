@@ -11,6 +11,7 @@ import { PopularBlogsContext } from "../../../context/PopularBlogsContext";
 import MyPostCard from "../../../components/card/myPostCard/MyPostCard";
 import "./style.scss";
 import Loader from "../../../components/shared/loader";
+import { toast } from "react-toastify";
 
 const MyPostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -62,7 +63,7 @@ const MyPostsPage = () => {
       };
       getMyPosts();
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   }, [search, callback]);
 
@@ -80,7 +81,7 @@ const MyPostsPage = () => {
         setPosts([...posts, ...data1]);
         setPage(pagination.next);
       } catch (error) {
-        console.log(error);
+        toast.error(error);
       }
     } else {
       setHasMore(false);
@@ -95,12 +96,11 @@ const MyPostsPage = () => {
       if (selected === null) {
         await request.post("post", values);
       } else {
-        console.log(values);
         await request.put(`post/${selected}`, values);
       }
       callback();
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setLoader(false);
     }
@@ -114,7 +114,7 @@ const MyPostsPage = () => {
       const { data } = await request.post("upload", formData);
       setPhoto(data._id);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setPhotoLoad(false);
     }
@@ -126,7 +126,7 @@ const MyPostsPage = () => {
       await request.delete(`post/${id}`);
       callback();
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setLoader(false);
     }
@@ -138,9 +138,8 @@ const MyPostsPage = () => {
       setFormLoad(true);
       let { data } = await request.get(`post/${id}`);
       reset(data);
-      console.log(data);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setFormLoad(false);
     }

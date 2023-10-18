@@ -29,7 +29,7 @@ const LoginPage = () => {
       const {
         data: { token, role },
       } = await request.post(`auth/login/`, user);
-      console.log(data);
+      toast.error(data);
 
       setIsAuth(true);
       getUser();

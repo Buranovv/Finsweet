@@ -6,6 +6,7 @@ import PopularPostsSlider from "../../../components/carousel/PopularPostsSlider"
 import CategorySlider from "../../../components/carousel/CategorySlider";
 import { Link } from "react-router-dom";
 import Loader from "../../../components/shared/loader";
+import { toast } from "react-toastify";
 
 const HomePage = () => {
   const [latestPost, setLatestPost] = useState({});
@@ -21,7 +22,7 @@ const HomePage = () => {
         setUserName(data.user.first_name + " " + data.user.last_name);
         setLatestPost(data);
       } catch (error) {
-        console.log(error);
+        toast.error(error);
       } finally {
         setLoading(false);
       }

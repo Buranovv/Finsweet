@@ -27,7 +27,7 @@ const AccountForm = () => {
           reset({ currentPassword: "", newPassword: "" });
           toast.success("Password changed!");
         } catch (error) {
-          console.log(error);
+          toast.error(error);
         } finally {
           setFormLoad(false);
         }

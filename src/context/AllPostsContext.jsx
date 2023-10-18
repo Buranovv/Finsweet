@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import request from "../server";
 import { LIMIT } from "../constants";
+import { toast } from "react-toastify";
 
 export const AllPostsContext = createContext();
 
@@ -34,7 +35,7 @@ const AllPostsContextProvider = ({ children }) => {
       };
       getAllPosts();
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   }, [search]);
 
@@ -50,7 +51,7 @@ const AllPostsContextProvider = ({ children }) => {
         setPosts([...posts, ...data1]);
         setPage(pagination.next);
       } catch (error) {
-        console.log(error);
+        toast.error(error);
       }
     } else {
       setHasMore(false);

@@ -6,18 +6,8 @@ import { IMG_URL } from "../../../constants";
 import "./style.scss";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-const PostsCard = ({
-  _id,
-  title,
-  description,
-  photoName,
-  ctgrName,
-  photoId,
-}) => {
-  console.log(photoName);
-
+const PostsCard = ({ _id, title, description, ctgrName, photoId }) => {
   const errorHandler = (error) => {
-    console.log(error);
     error.target.src = "/icon.png";
   };
 

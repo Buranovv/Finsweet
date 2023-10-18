@@ -12,10 +12,8 @@ const PopularPostsCard = ({
   createdAt,
   user: { first_name, last_name },
   photoId: imgId,
-  photoName,
 }) => {
   let date = new Date(createdAt).toString().split(" ").slice(1, 4);
-  console.log(photoName);
 
   const errorHandler = (error) => {
     error.target.src = "/icon.png";

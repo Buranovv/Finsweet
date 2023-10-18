@@ -57,7 +57,6 @@ const AccountPage = () => {
   };
 
   const save = async (values) => {
-    console.log(values);
     try {
       setFormLoad(true);
       values.birthday = new Date(values?.birthday).toISOString();
@@ -65,7 +64,7 @@ const AccountPage = () => {
       getUser();
       toast.success("Changes saved!");
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setFormLoad(false);
     }
@@ -79,7 +78,7 @@ const AccountPage = () => {
       await request.post("auth/upload", formData);
       getUser();
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setPhotoLoad(false);
     }

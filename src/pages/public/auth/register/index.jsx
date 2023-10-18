@@ -35,7 +35,7 @@ const RegisterPage = () => {
       const {
         data: { token, role },
       } = await request.post(`auth/register/`, user);
-      console.log(data);
+      toast.error(data);
 
       setIsAuth(true);
       setRole(role);
