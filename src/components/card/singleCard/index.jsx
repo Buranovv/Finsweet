@@ -22,7 +22,9 @@ const SingleCard = ({
         <LazyLoadImage
           className="singleImg"
           effect="blur"
-          src={`${IMG_URL}${photoId}.jpg`}
+          src={`${IMG_URL}${photoId}.${
+            first_name === "Zahiriddin" ? "png" : "jpg"
+          }`}
           alt=""
         />
       </div>

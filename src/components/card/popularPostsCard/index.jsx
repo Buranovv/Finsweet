@@ -12,8 +12,14 @@ const PopularPostsCard = ({
   createdAt,
   user: { first_name, last_name },
   photoId: imgId,
+  photoName,
 }) => {
   let date = new Date(createdAt).toString().split(" ").slice(1, 4);
+  console.log(photoName);
+
+  const errorHandler = (error) => {
+    error.target.src = "/icon.png";
+  };
 
   return (
     <Link to={`/${_id}`}>
@@ -22,8 +28,9 @@ const PopularPostsCard = ({
           <LazyLoadImage
             effect="blur"
             className="postsCard__img"
-            src={`${IMG_URL}/${imgId}.jpg`}
+            src={`${IMG_URL}/${imgId}.${"jpg" || "png"}`}
             alt=""
+            onError={errorHandler}
           />
         </div>
         <div className="postsCard__body">
@@ -45,6 +52,7 @@ PopularPostsCard.propTypes = {
   description: PropTypes.string,
   createdAt: PropTypes.string,
   user: PropTypes.object,
+  photoName: PropTypes.string,
   photoId: PropTypes.string,
 };
 

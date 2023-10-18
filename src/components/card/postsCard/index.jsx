@@ -10,10 +10,16 @@ const PostsCard = ({
   _id,
   title,
   description,
-  photo: { _id: photoId, name: photoName },
-  category: { name },
+  photoName,
+  ctgrName,
+  photoId,
 }) => {
-  let typeOfPhoto = photoName.split(".")[1];
+  console.log(photoName);
+
+  const errorHandler = (error) => {
+    console.log(error);
+    error.target.src = "/icon.png";
+  };
 
   return (
     <Link to={`/${_id}`}>
@@ -21,12 +27,13 @@ const PostsCard = ({
         <div className="allPostsCard__img-box">
           <LazyLoadImage
             effect="blur"
-            src={`${IMG_URL}/${photoId ? photoId : ""}.${typeOfPhoto}`}
+            src={`${IMG_URL}/${photoId ? photoId : ""}.${"jpg" || "png"}`}
             alt=""
+            onError={errorHandler}
           />
         </div>
         <div className="allPostsCard__body">
-          <p className="allPostsCard__ctgr">{name ? name : ""}</p>
+          <p className="allPostsCard__ctgr">{ctgrName ? ctgrName : ""}</p>
           <h5 className="allPostsCard__title">{title}</h5>
           <p className="allPostsCard__desc">{description}</p>
         </div>
@@ -39,8 +46,9 @@ PostsCard.propTypes = {
   _id: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
-  photo: PropTypes.object,
-  category: PropTypes.object,
+  photoName: PropTypes.string,
+  photoId: PropTypes.string,
+  ctgrName: PropTypes.string,
 };
 
 export default PostsCard;

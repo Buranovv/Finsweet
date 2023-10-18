@@ -1,6 +1,6 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { useCallback, useContext, useEffect, useState } from "react";
+import { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import request from "../../../server";
 import { LIMIT } from "../../../constants";
 
@@ -245,23 +245,39 @@ const MyPostsPage = () => {
                 ) : null}
               </div>
               <div>
-                <label htmlFor="image" className="photo__label">
-                  Photo
-                </label>
-                <input
-                  style={{
-                    display: "none",
-                  }}
-                  {...register("photo", {
-                    required: "This field must not be empty!",
-                  })}
-                  onChange={uploadPhoto}
-                  id="image"
-                  type="file"
-                />
-                {errors.photo ? (
-                  <p>{errors.photo?.message}</p>
-                ) : null}
+                {selected === null ? (
+                  <Fragment>
+                    <label htmlFor="image" className="photo__label">
+                      Photo
+                    </label>
+                    <input
+                      style={{
+                        display: "none",
+                      }}
+                      onChange={uploadPhoto}
+                      id="image"
+                      type="file"
+                    />
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <label htmlFor="image" className="photo__label">
+                      Photo
+                    </label>
+                    <input
+                      style={{
+                        display: "none",
+                      }}
+                      {...register("photo", {
+                        required: "This field must not be empty!",
+                      })}
+                      onChange={uploadPhoto}
+                      id="image"
+                      type="file"
+                    />
+                    {errors.photo ? <p>{errors.photo?.message}</p> : null}
+                  </Fragment>
+                )}
               </div>
             </form>
           )}

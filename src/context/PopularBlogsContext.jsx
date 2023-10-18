@@ -8,7 +8,8 @@ const PopularBlogsContextProvider = ({ children }) => {
   const [popPosts, setPopPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [photoId, setPhotoId] = useState(false);
+  const [photoId, setPhotoId] = useState(null);
+  const [photoName, setPhotoName] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -19,6 +20,7 @@ const PopularBlogsContextProvider = ({ children }) => {
           data: { data: categories },
         } = await request.get("category");
 
+        setPhotoName(data?.photo?.name);
         setPhotoId(data.photo?._id);
         setPopPosts(data);
         setCategories(categories);
@@ -31,7 +33,7 @@ const PopularBlogsContextProvider = ({ children }) => {
     getData();
   }, []);
 
-  const state = { popPosts, loading, categories, photoId };
+  const state = { popPosts, loading, categories, photoId, photoName };
   return (
     <PopularBlogsContext.Provider value={state}>
       {children}

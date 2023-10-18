@@ -11,6 +11,9 @@ const AllPostsContextProvider = ({ children }) => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [photoName, setPhotoName] = useState(null);
+  const [photoId, setPhotoId] = useState(null);
+  const [ctgrName, setCtgrName] = useState(null);
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
@@ -22,6 +25,9 @@ const AllPostsContextProvider = ({ children }) => {
           `post?limit=${LIMIT}&${search ? `search=${search}` : ""}`
         );
 
+        setPhotoId(data1.photo?._id);
+        setPhotoName(data1?.photo?.name);
+        setCtgrName(data1.category?.name);
         setPosts(data1);
         setPage(pagination.next);
         setTotal(pagination.total);
@@ -56,7 +62,16 @@ const AllPostsContextProvider = ({ children }) => {
     setSearch(e.target.name.value.toLowerCase());
   };
 
-  const state = { posts, setSearch, refetchData, hasMore, handleSearch };
+  const state = {
+    posts,
+    setSearch,
+    refetchData,
+    hasMore,
+    handleSearch,
+    photoName,
+    photoId,
+    ctgrName,
+  };
   return (
     <AllPostsContext.Provider value={state}>
       {children}

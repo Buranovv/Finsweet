@@ -8,8 +8,16 @@ import PostsCard from "../../../components/card/postsCard";
 import "./style.scss";
 
 const BlogPage = () => {
-  const { posts, loading, handleSearch, refetchData, hasMore } =
-    useContext(AllPostsContext);
+  const {
+    posts,
+    loading,
+    handleSearch,
+    refetchData,
+    hasMore,
+    photoName,
+    photoId,
+    ctgrName,
+  } = useContext(AllPostsContext);
 
   return (
     <div className="posts">
@@ -33,7 +41,15 @@ const BlogPage = () => {
             {loading ? (
               <Loader />
             ) : (
-              posts.map((post, i) => <PostsCard key={i} {...post} />)
+              posts.map((post, i) => (
+                <PostsCard
+                  key={i}
+                  {...post}
+                  photoName={photoName}
+                  ctgrName={ctgrName}
+                  photoId={photoId}
+                />
+              ))
             )}
           </InfiniteScroll>
         </div>
