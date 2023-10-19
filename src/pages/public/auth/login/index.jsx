@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
 import "../style.scss";
 import request from "../../../../server";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../../context/AuthContext";
 import Cookies from "js-cookie";
 import { ROLE, TOKEN } from "../../../../constants";
 import { useNavigate } from "react-router-dom";
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const { setIsAuth, setRole, getUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [passwordHide, setPasswordHide] = useState(true);
 
   const {
     formState: { errors },
@@ -69,21 +71,34 @@ const LoginPage = () => {
             {errors.username ? <p>{errors.username?.message}</p> : null}
           </div>
           <div>
-            <input
-              style={{
-                border: `1px solid ${errors.password ? "red" : ""}`,
-              }}
-              className="password"
-              type="password"
-              {...register("password", {
-                required: "Password is required!",
-                minLength: {
-                  value: 5,
-                  message: "Password minimal length must be 5",
-                },
-              })}
-              placeholder="Password"
-            />
+            <div className="inputBox">
+              <input
+                style={{
+                  border: `1px solid ${errors.password ? "red" : ""}`,
+                }}
+                className="password"
+                type={passwordHide === true ? "password" : "text"}
+                {...register("password", {
+                  required: "Password is required!",
+                  minLength: {
+                    value: 5,
+                    message: "Password minimal length must be 5",
+                  },
+                })}
+                placeholder="Password"
+              />
+              {passwordHide ? (
+                <EyeInvisibleOutlined
+                  className="password-img"
+                  onClick={() => setPasswordHide(false)}
+                />
+              ) : (
+                <EyeOutlined
+                  className="password-img"
+                  onClick={() => setPasswordHide(true)}
+                />
+              )}
+            </div>
             {errors.password ? <p>{errors.password?.message}</p> : null}
           </div>
           <button type="submit">Login</button>

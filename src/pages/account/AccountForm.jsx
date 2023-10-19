@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import request from "../../server";
 import { Modal } from "antd";
 import { toast } from "react-toastify";
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 
 const AccountForm = () => {
   const [formLoad, setFormLoad] = useState(false);
+  const [passwordHide, setPasswordHide] = useState(true);
+  const [newPasswordHide, setNewPasswordHide] = useState(true);
 
   const {
     formState: { errors },
@@ -44,35 +47,62 @@ const AccountForm = () => {
         className={`form ${formLoad ? "form-disabled" : ""}`}
       >
         <div>
-          <input
-            style={{
-              border: `1px solid ${errors.currentPassword ? "red" : ""}`,
-            }}
-            type="password"
-            placeholder="Current password"
-            {...register("currentPassword", {
-              required: "Please enter the current password!",
-            })}
-          />
+          <div className="inputBox">
+            <input
+              style={{
+                border: `1px solid ${errors.currentPassword ? "red" : ""}`,
+              }}
+              type={passwordHide === true ? "password" : "text"}
+              placeholder="Current password"
+              {...register("currentPassword", {
+                required: "Please enter the current password!",
+              })}
+            />
+            {passwordHide ? (
+              <EyeInvisibleOutlined
+                className="password-img"
+                onClick={() => setPasswordHide(false)}
+              />
+            ) : (
+              <EyeOutlined
+                className="password-img"
+                onClick={() => setPasswordHide(true)}
+              />
+            )}
+          </div>
           {errors.currentPassword ? (
             <p>{errors.currentPassword?.message}</p>
           ) : null}
         </div>
         <div>
-          <input
-            style={{ border: `1px solid ${errors.newPassword ? "red" : ""}` }}
-            type="password"
-            placeholder="New password"
-            {...register("newPassword", {
-              required: "Please enter a new password!",
-              minLength: {
-                value: 5,
-                message: "Password`s minimal length must be 5!",
-              },
-              validate: (value) =>
-                value !== currentPassword || "The passwords must not be same!",
-            })}
-          />
+          <div className="inputBox">
+            <input
+              style={{ border: `1px solid ${errors.newPassword ? "red" : ""}` }}
+              type={newPasswordHide === true ? "password" : "text"}
+              placeholder="New password"
+              {...register("newPassword", {
+                required: "Please enter a new password!",
+                minLength: {
+                  value: 5,
+                  message: "Password`s minimal length must be 5!",
+                },
+                validate: (value) =>
+                  value !== currentPassword ||
+                  "The passwords must not be same!",
+              })}
+            />
+            {newPasswordHide === true ? (
+              <EyeInvisibleOutlined
+                className="password-img"
+                onClick={() => setNewPasswordHide(false)}
+              />
+            ) : (
+              <EyeOutlined
+                className="password-img"
+                onClick={() => setNewPasswordHide(true)}
+              />
+            )}
+          </div>
           {errors.newPassword ? <p>{errors.newPassword?.message}</p> : null}
         </div>
         <button type="submit">Change</button>

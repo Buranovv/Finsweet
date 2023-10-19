@@ -73,6 +73,15 @@
       line-height: 16px;
     }
   }
+  .inputBox {
+    position: relative;
+  }
+}
+
+.password-img {
+  position: absolute;
+  right: 5%;
+  top: 40%;
 }
 
 .form-disabled {
@@ -116,4 +125,10 @@
   letter-spacing: -2px;
 
   cursor: pointer;
+}
+
+@media (max-width: 650px) {
+  .password-img {
+    top: 35%;
+  }
 }

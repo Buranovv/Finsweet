@@ -52,7 +52,7 @@ const HomePage = () => {
                       By <span>{userName}</span> |{" "}
                       {`${date[0]} ${date[1]}, ${date[2]}`}
                     </p>
-                    <p className="hero__description">{description}</p>
+                    <p className="hero__description">{description?.slice(0, 200)}...</p>
                   </div>
                 </div>
                 <Link to={`/${_id}`} className="hero__btn">

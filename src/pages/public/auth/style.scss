@@ -47,6 +47,15 @@
 
     cursor: pointer;
   }
+  .inputBox {
+    position: relative;
+  }
+}
+
+.password-img {
+  position: absolute;
+  right: 5%;
+  top: 40%;
 }
 
 @media (max-width: 1024px) {
@@ -72,6 +81,10 @@
 }
 
 @media (max-width: 650px) {
+  .password-img {
+    top: 35%;
+  }
+
   .login,
   .register {
     padding: 30px 0;
