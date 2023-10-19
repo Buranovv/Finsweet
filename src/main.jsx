@@ -11,6 +11,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import StoreProvider from "./redux/store/index.jsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -19,7 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <AllPostsContextProvider>
         <AuthContextProvider>
           <ToastContainer />
-          <App />
+          <StoreProvider>
+            <App />
+          </StoreProvider>
         </AuthContextProvider>
       </AllPostsContextProvider>
     </PopularBlogsContextProvider>

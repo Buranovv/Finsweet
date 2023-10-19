@@ -1,12 +1,11 @@
 import { Fragment, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import Cookies from "js-cookie";
-import { ROLE, TOKEN } from "../../constants";
 import { AiOutlineUpload } from "react-icons/ai";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
+import { LoadingOutlined } from "@ant-design/icons";
+import { AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/shared/loader";
 import { getImg } from "../../utils";
 import dayjs from "dayjs";
@@ -15,20 +14,17 @@ import AccountForm from "./AccountForm";
 
 import "../public/auth/style.scss";
 import "./style.scss";
-import { Modal } from "antd";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AccountPage = () => {
+  const navigate = useNavigate();
   const [infoTab, setInfoTab] = useState(true);
   const [settingsTab, setISettings] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [photoLoad, setPhotoLoad] = useState(false);
   const [formLoad, setFormLoad] = useState(false);
 
-  const navigate = useNavigate();
-  const { setIsAuth, setRole, getUser, user, loading } =
-    useContext(AuthContext);
+  const { logout, getUser, user, loading } = useContext(AuthContext);
   const {
     formState: { errors },
     register,
@@ -82,19 +78,6 @@ const AccountPage = () => {
     } finally {
       setPhotoLoad(false);
     }
-  };
-
-  const logout = () => {
-    Modal.confirm({
-      title: "Do you want to logout?",
-      onOk: () => {
-        Cookies.remove(TOKEN);
-        Cookies.remove(ROLE);
-        setIsAuth(false);
-        setRole(null);
-        navigate("/");
-      },
-    });
   };
 
   return (
@@ -229,7 +212,7 @@ const AccountPage = () => {
           <AccountForm />
 
           <div className="logout-box">
-            <button className="logout-btn" onClick={logout}>
+            <button className="logout-btn" onClick={() => logout(navigate)}>
               Logout
             </button>
           </div>

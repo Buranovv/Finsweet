@@ -7,7 +7,7 @@ const FrontLayout = () => {
   return (
     <Fragment>
       <Header />
-      <main>
+      <main className="userMain">
         <Outlet />
       </main>
       <Footer />

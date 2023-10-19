@@ -43,7 +43,7 @@ select {
   --txt-dark: 35, 37, 54;
   --txt-light: 255, 255, 255;
 }
-main {
+.userMain {
   margin-top: 86px;
 }
 
@@ -54,7 +54,7 @@ main {
 }
 
 @media (max-width: 835px) {
-  main {
+  .userMain {
     margin-top: 70px;
   }
 }
@@ -63,7 +63,7 @@ main {
   .container {
     padding: 0 35px;
   }
-  main {
+  .userMain {
     margin-top: 50.71px;
   }
 }

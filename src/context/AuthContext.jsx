@@ -5,6 +5,7 @@ import { ROLE, TOKEN } from "../constants";
 import Cookies from "js-cookie";
 import request from "../server";
 import { toast } from "react-toastify";
+import { Modal } from "antd";
 
 export const AuthContext = createContext();
 
@@ -26,11 +27,33 @@ const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const logout = (navigate) => {
+    Modal.confirm({
+      title: "Do you want to logout?",
+      onOk: () => {
+        Cookies.remove(TOKEN);
+        Cookies.remove(ROLE);
+        setIsAuth(false);
+        setRole(null);
+        navigate("/");
+      },
+    });
+  };
+
   useEffect(() => {
     isAuth && getUser();
   }, [isAuth]);
 
-  const state = { isAuth, role, user, loading, setIsAuth, setRole, getUser };
+  const state = {
+    isAuth,
+    role,
+    user,
+    loading,
+    setIsAuth,
+    setRole,
+    getUser,
+    logout,
+  };
 
   return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
 };
