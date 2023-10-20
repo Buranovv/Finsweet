@@ -8,21 +8,20 @@ import PostsCard from "../../../components/card/postsCard";
 import "./style.scss";
 
 const BlogPage = () => {
-  const {
-    posts,
-    loading,
-    handleSearch,
-    refetchData,
-    hasMore,
-    ctgrName,
-  } = useContext(AllPostsContext);
+  const { posts, loading, handleSearch, refetchData, hasMore, ctgrName } =
+    useContext(AllPostsContext);
 
   return (
     <div className="posts">
       <div className="container">
         <h2 className="sectionTitle">All posts</h2>
-        <form className="posts__form" onSubmit={handleSearch}>
-          <input type="text" id="name" placeholder="Searching ..." />
+        <form className="posts__form">
+          <input
+            type="text"
+            id="name"
+            placeholder="Searching ..."
+            onChange={handleSearch}
+          />
         </form>
         <div className="posts__box">
           <InfiniteScroll

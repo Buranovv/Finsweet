@@ -154,8 +154,13 @@ const MyPostsPage = () => {
     <div className="posts">
       <div className="container">
         <h2 className="sectionTitle">My posts</h2>
-        <form className="posts__form" onSubmit={handleSearch}>
-          <input type="text" id="name" placeholder="Searching ..." />
+        <form className="posts__form">
+          <input
+            type="text"
+            id="name"
+            placeholder="Searching ..."
+            onChange={handleSearch}
+          />
           <button type="submit"></button>
           <button onClick={openModal}>Add post</button>
         </form>
