@@ -146,8 +146,7 @@ const MyPostsPage = () => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    setSearch(e.target.name.value.toLowerCase());
+    setSearch(e.target.value.toLowerCase());
   };
 
   return (

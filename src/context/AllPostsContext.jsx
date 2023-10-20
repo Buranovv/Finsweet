@@ -59,8 +59,7 @@ const AllPostsContextProvider = ({ children }) => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    setSearch(e.target.name.value.toLowerCase());
+    setSearch(e.target.value.toLowerCase());
   };
 
   const state = {
