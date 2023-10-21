@@ -34,7 +34,6 @@ const RegisterPage = () => {
       username: data.username,
       password: data.password,
     };
-    try {
       const {
         data: { token, role },
       } = await request.post(`auth/register/`, user);
@@ -49,9 +48,7 @@ const RegisterPage = () => {
       } else {
         navigate("/dashboard");
       }
-    } catch (error) {
-      toast.error(error.response.data);
-    }
+  
   };
 
   const password = watch("password");

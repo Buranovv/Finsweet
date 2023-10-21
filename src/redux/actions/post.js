@@ -1,18 +1,17 @@
-import { toast } from "react-toastify";
 import request from "../../server";
-import {
-  POST_FETCHING,
-  POST_LOADING,
-  POST_PAGE,
-  POST_SEARCH,
-  POST_TOTAL,
-} from "../types/post";
+import { POST_CONTROL } from "../types/post";
 import { LIMIT_TABLE } from "../../constants";
 
-export const getPost = (page = 1, search = "") => {
-  return async (dispatch) => {
+export const updateState = (payload) => ({
+  type: POST_CONTROL,
+  payload,
+});
+
+export const getPost =
+  (page = 1, search = "") =>
+  async (dispatch) => {
     try {
-      dispatch({ type: POST_LOADING, payload: true });
+      dispatch(updateState({ loading: true }));
       const {
         data: {
           data,
@@ -21,27 +20,74 @@ export const getPost = (page = 1, search = "") => {
       } = await request.get("post", {
         params: { page, limit: LIMIT_TABLE, search },
       });
-      dispatch({ type: POST_FETCHING, payload: data });
-      dispatch({ type: POST_TOTAL, payload: total });
-    } catch (error) {
-      console.log(error);
-      toast.error(error);
+      let posts = data.map((el) => ({ ...el, key: el._id }));
+      dispatch(updateState({ posts, total }));
     } finally {
-      dispatch({ type: POST_LOADING, payload: false });
+      dispatch(updateState({ loading: false }));
     }
   };
+
+export const changePage = (page, search) => (dispatch) => {
+  dispatch(updateState({ activePage: page }));
+  dispatch(getPost(page, search));
 };
 
-export const changePage = (page) => {
-  return (dispatch) => {
-    dispatch({ type: POST_PAGE, payload: page });
-    dispatch(getPost(page));
-  };
+export const searchPost = (search) => (dispatch) => {
+  dispatch(updateState({ search }));
+  dispatch(getPost(1, search));
 };
 
-export const searchPost = (search) => {
-  return (dispatch) => {
-    dispatch({ type: POST_SEARCH, payload: search });
-    dispatch(getPost(1, search));
+export const controlModal = (payload) => (dispatch) => {
+  dispatch(updateState({ isModalOpen: payload }));
+};
+
+export const uploadPhoto = (file) => async (dispatch) => {
+  try {
+    dispatch(updateState({ photoLoad: true }));
+    let formData = new FormData();
+    formData.append("file", file);
+    const { data } = await request.post("upload", formData);
+    dispatch(updateState({ photoData: data }));
+  } finally {
+    dispatch(updateState({ photoLoad: false }));
+  }
+};
+
+export const sendPost =
+  ({ values, selected, activePage, search }) =>
+  async (dispatch) => {
+    try {
+      dispatch(updateState({ isModalLoading: true }));
+      selected === null
+        ? await request.post("post", values)
+        : await request.put(`post/${selected}`, values);
+      dispatch(updateState({ isModalOpen: false }));
+      dispatch(getPost(activePage, search));
+    } finally {
+      dispatch(updateState({ isModalLoading: false }));
+    }
   };
+
+export const editPost = (form, id) => async (dispatch) => {
+  try {
+    dispatch(
+      updateState({
+        selected: id,
+        isModalOpen: true,
+        photoLoad: true,
+        isModalLoading: true,
+      })
+    );
+    const { data } = await request.get(`post/${id}`);
+    dispatch(updateState({ photoData: data.photo }));
+    form.setFieldsValue({ ...data, category: data.category._id });
+  } finally {
+    dispatch(updateState({ photoLoad: false, isModalLoading: false }));
+  }
+};
+
+export const deletePost = (id, search) => async (dispatch) => {
+  await request.delete(`post/${id}`);
+  dispatch(getPost(1, search));
+  dispatch(updateState({ activePage: 1 }));
 };

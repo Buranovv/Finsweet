@@ -9,6 +9,7 @@ import {
   LogoutOutlined,
   CommentOutlined,
   BlockOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { Layout, Menu, Button, theme } from "antd";
@@ -63,7 +64,12 @@ const AdminLayout = () => {
               label: <Link to="/commentControl">Comments</Link>,
             },
             {
-              key: "4",
+              key: "/adminAccount",
+              icon: <UserOutlined />,
+              label: <Link to="/adminAccount">Account</Link>,
+            },
+            {
+              key: "5",
               icon: <LogoutOutlined />,
               label: "Logout",
               onClick: () => logout(navigate),

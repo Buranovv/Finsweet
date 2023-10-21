@@ -48,6 +48,7 @@ function App() {
             <Route path="categoryControl" element={<CategoryControl />} />
             <Route path="postControl" element={<PostControl />} />
             <Route path="commentControl" element={<CommentControl />} />
+            <Route path="adminAccount" element={<AccountPage />} />
           </Route>
         ) : null}
         <Route path="*" element={<NotFoundPage />} />

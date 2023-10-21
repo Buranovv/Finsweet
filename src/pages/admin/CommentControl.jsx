@@ -1,5 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -21,17 +20,58 @@ import {
 import Search from "antd/es/input/Search";
 import {
   changePage,
+  controlModal,
+  deleteComment,
+  editComment,
   getComment,
   searchComment,
+  sendComment,
+  updateState,
 } from "../../redux/actions/comment";
 import { LIMIT_TABLE } from "../../constants";
 
 const CommentControl = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
-  const [isModalLoading, setIsModalLoading] = useState(false);
+
+  const {
+    comments,
+    loading,
+    total,
+    activePage,
+    selected,
+    isModalLoading,
+    isModalOpen,
+    search,
+  } = useSelector((state) => state.comment);
+
+  useEffect(() => {
+    total === 0 && dispatch(getComment());
+  }, [dispatch, total]);
+
+  const showModal = () => {
+    form.resetFields();
+    dispatch(controlModal(true));
+    dispatch(updateState({ photoData: null, selected: null }));
+  };
+  const closeModal = () => {
+    dispatch(controlModal(false));
+  };
+
+  const handleOk = async () => {
+    let values = await form.validateFields();
+    dispatch(sendComment({ values, selected, activePage, search }));
+  };
+
+  const mustDelete = (id) => {
+    Modal.confirm({
+      title: "Do you want to delete?",
+      onOk: () => {
+        dispatch(deleteComment(id, search));
+      },
+    });
+  };
+
   const columns = [
     {
       title: "User",
@@ -55,47 +95,25 @@ const CommentControl = () => {
       dataIndex: "_id",
       render: (id, i) => (
         <Space key={i} size="middle">
-          <Link to={`/commentControl/${id}`}>
-            <Button type="dashed">See comments</Button>
-          </Link>
-          <Button type="primary" icon={<EditOutlined />}>
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => dispatch(editComment(form, id))}
+          >
             Edit
           </Button>
-          <Button icon={<DeleteOutlined />} danger type="primary">
+          <Button
+            icon={<DeleteOutlined />}
+            danger
+            type="primary"
+            onClick={() => mustDelete(id)}
+          >
             Delete
           </Button>
         </Space>
       ),
     },
   ];
-
-  const { comments, loading, total, activePage } = useSelector(
-    (state) => state.comment
-  );
-
-  useEffect(() => {
-    total === 0 && dispatch(getComment());
-  }, [dispatch, total]);
-
-  const showModal = () => {
-    form.resetFields();
-    setIsModalOpen(true);
-    setSelected(null);
-    setIsModalLoading(false);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const submit = async () => {
-    try {
-      let values = await form.validateFields();
-      // await request.post("category", values);
-      console.log(values);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return (
     <Fragment>
@@ -145,7 +163,7 @@ const CommentControl = () => {
           total={total}
           pageSize={LIMIT_TABLE}
           current={activePage}
-          onChange={(page) => dispatch(changePage(page))}
+          onChange={(page) => dispatch(changePage(page, search))}
         />
       ) : null}
       <Modal
@@ -155,7 +173,7 @@ const CommentControl = () => {
           icon: selected === null ? <UserAddOutlined /> : <SaveOutlined />,
         }}
         open={isModalOpen}
-        onOk={submit}
+        onOk={handleOk}
         onCancel={closeModal}
         maskClosable={false}
         confirmLoading={isModalLoading}
@@ -171,19 +189,6 @@ const CommentControl = () => {
           autoComplete="off"
           form={form}
         >
-          <Form.Item
-            label="User"
-            name="user"
-            rules={[
-              {
-                required: true,
-                message: "Please fill this field!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
           <Form.Item
             label="Post"
             name="post"
@@ -203,7 +208,7 @@ const CommentControl = () => {
             rules={[
               {
                 required: true,
-                message: "Please choose a file!",
+                message: "Please fill this field!",
               },
             ]}
           >

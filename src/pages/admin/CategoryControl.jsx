@@ -1,5 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -11,6 +10,7 @@ import {
   Modal,
   Space,
   Table,
+  Upload,
 } from "antd";
 
 import {
@@ -18,32 +18,76 @@ import {
   SaveOutlined,
   EditOutlined,
   DeleteOutlined,
+  LoadingOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 import {
   changePage,
+  controlModal,
+  deleteCategory,
+  editCategory,
   getCategory,
   searchCategory,
+  sendCategory,
+  updateState,
+  uploadPhoto,
 } from "../../redux/actions/category";
 import { getImg } from "../../utils";
 import { LIMIT_CTGR } from "../../constants";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const CategoryControl = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
-  // const [photo, setPhoto] = useState(null);
-  const [isModalLoading, setIsModalLoading] = useState(false);
+
+  const {
+    categories,
+    loading,
+    total,
+    activePage,
+    selected,
+    isModalLoading,
+    isModalOpen,
+    photoLoad,
+    search,
+    photoData,
+  } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    total === 0 && dispatch(getCategory());
+  }, [dispatch, total]);
+
+  const showModal = () => {
+    form.resetFields();
+    dispatch(controlModal(true));
+    dispatch(updateState({ photoData: null, selected: null }));
+  };
+  const closeModal = () => {
+    dispatch(controlModal(false));
+  };
+
+  const handleOk = async () => {
+    let values = await form.validateFields();
+    values.photo = photoData._id;
+    dispatch(sendCategory({ values, selected, activePage, search }));
+  };
+
+  const mustDelete = (id) => {
+    Modal.confirm({
+      title: "Do you want to delete?",
+      onOk: () => {
+        dispatch(deleteCategory(id, search));
+      },
+    });
+  };
+
   const columns = [
     {
       title: "Image",
       dataIndex: "photo",
       key: "photo",
       render: (photo, i) => {
-        const photoType = photo?.name?.split(".")[1];
-        const photoId = photo?._id;
-        const photo2 = `${photoId}.${photoType}`;
         const handleError = (error) => {
           error.target.src = "/icon.png";
         };
@@ -53,7 +97,7 @@ const CategoryControl = () => {
             key={i}
             height={50}
             onError={handleError}
-            src={getImg(photo2)}
+            src={getImg(photo)}
           />
         );
       },
@@ -75,59 +119,25 @@ const CategoryControl = () => {
       dataIndex: "_id",
       render: (id, i) => (
         <Space key={i} size="middle">
-          <Link to={`/categoryControl/${id}`}>
-            <Button type="dashed">See posts</Button>
-          </Link>
-          <Button type="primary" icon={<EditOutlined />}>
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => dispatch(editCategory(form, id))}
+          >
             Edit
           </Button>
-          <Button icon={<DeleteOutlined />} danger type="primary">
+          <Button
+            icon={<DeleteOutlined />}
+            danger
+            type="primary"
+            onClick={() => mustDelete(id)}
+          >
             Delete
           </Button>
         </Space>
       ),
     },
   ];
-
-  const { categories, loading, total, activePage } = useSelector(
-    (state) => state.category
-  );
-
-  useEffect(() => {
-    total === 0 && dispatch(getCategory());
-  }, [dispatch, total]);
-
-  const showModal = () => {
-    form.resetFields();
-    setIsModalOpen(true);
-    setSelected(null);
-    setIsModalLoading(false);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const submit = async () => {
-    try {
-      let values = await form.validateFields();
-      // values.photo = photo;
-      // await request.post("category", values);
-      console.log(values);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // const uploadPhoto = async (e) => {
-  //   try {
-  //     let formData = new FormData();
-  //     formData.append("file", e.target.files["0"]);
-  //     const { data } = await request.post("upload", formData);
-  //     setPhoto(data._id);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };
 
   return (
     <Fragment>
@@ -177,7 +187,7 @@ const CategoryControl = () => {
           total={total}
           pageSize={LIMIT_CTGR}
           current={activePage}
-          onChange={(page) => dispatch(changePage(page))}
+          onChange={(page) => dispatch(changePage(page, search))}
         />
       ) : null}
       <Modal
@@ -187,7 +197,7 @@ const CategoryControl = () => {
           icon: selected === null ? <UserAddOutlined /> : <SaveOutlined />,
         }}
         open={isModalOpen}
-        onOk={submit}
+        onOk={handleOk}
         onCancel={closeModal}
         maskClosable={false}
         confirmLoading={isModalLoading}
@@ -203,6 +213,32 @@ const CategoryControl = () => {
           autoComplete="off"
           form={form}
         >
+          <Upload
+            name="photo"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            onChange={(e) => dispatch(uploadPhoto(e.file.originFileObj))}
+          >
+            <div>
+              {photoLoad ? (
+                <LoadingOutlined />
+              ) : photoData ? (
+                <LazyLoadImage
+                  effect="blur"
+                  src={getImg(photoData)}
+                  alt="avatar"
+                  style={{ width: "100%" }}
+                />
+              ) : (
+                <div>
+                  <PlusOutlined />
+                  <div>upload</div>
+                </div>
+              )}
+            </div>
+          </Upload>
+
           <Form.Item
             label="Name"
             name="name"
@@ -210,6 +246,10 @@ const CategoryControl = () => {
               {
                 required: true,
                 message: "Please fill this field!",
+              },
+              {
+                min: 3,
+                message: "Name`s minimum length must be 3!",
               },
             ]}
           >
@@ -224,22 +264,13 @@ const CategoryControl = () => {
                 required: true,
                 message: "Please fill this field!",
               },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Photo"
-            name="photo"
-            // onChange={uploadPhoto}
-            rules={[
               {
-                required: true,
-                message: "Please choose a file!",
+                min: 10,
+                message: "Name`s minimum length must be 10!",
               },
             ]}
           >
-            <Input type="file" />
+            <Input />
           </Form.Item>
         </Form>
       </Modal>

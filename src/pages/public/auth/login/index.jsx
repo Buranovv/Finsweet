@@ -27,27 +27,23 @@ const LoginPage = () => {
       username: data.username,
       password: data.password,
     };
-    try {
-      const {
-        data: { token, role },
-      } = await request.post(`auth/login/`, user);
-      toast.error(data);
+    const {
+      data: { token, role },
+    } = await request.post(`auth/login/`, user);
+    toast.error(data);
 
-      setIsAuth(true);
-      getUser();
-      setRole(role);
-      Cookies.set(TOKEN, token);
-      Cookies.set(ROLE, role);
+    setIsAuth(true);
+    getUser();
+    setRole(role);
+    Cookies.set(TOKEN, token);
+    Cookies.set(ROLE, role);
 
-      request.defaults.headers.Authorization = `Bearer ${token}`;
+    request.defaults.headers.Authorization = `Bearer ${token}`;
 
-      if (role === "user") {
-        navigate("/myPosts");
-      } else {
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      toast.error(error.response.data);
+    if (role === "user") {
+      navigate("/myPosts");
+    } else {
+      navigate("/dashboard");
     }
   };
 

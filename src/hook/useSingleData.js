@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import request from "../server";
-import { toast } from "react-toastify";
 
 const useSingleData = (param, id) => {
   const [data, setData] = useState({});
@@ -24,8 +23,6 @@ const useSingleData = (param, id) => {
         setCtgrName(data.category?.name);
         setPhotoId(data.photo._id);
         setData(data);
-      } catch (error) {
-        toast.error(error);
       } finally {
         setLoading(false);
       }

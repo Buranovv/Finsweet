@@ -1,18 +1,17 @@
-import { toast } from "react-toastify";
 import request from "../../server";
-import {
-  USER_FETCHING,
-  USER_LOADING,
-  USER_PAGE,
-  USER_SEARCH,
-  USER_TOTAL,
-} from "../types/user";
+import { USER_CONTROL } from "../types/user";
 import { LIMIT_TABLE } from "../../constants";
 
-export const getUser = (page = 1, search = "") => {
-  return async (dispatch) => {
+export const updateState = (payload) => ({
+  type: USER_CONTROL,
+  payload,
+});
+
+export const getUser =
+  (page = 1, search = "") =>
+  async (dispatch) => {
     try {
-      dispatch({ type: USER_LOADING, payload: true });
+      dispatch(updateState({ loading: true }));
       const {
         data: {
           data,
@@ -21,27 +20,75 @@ export const getUser = (page = 1, search = "") => {
       } = await request.get("user", {
         params: { page, limit: LIMIT_TABLE, search },
       });
-      dispatch({ type: USER_FETCHING, payload: data });
-      dispatch({ type: USER_TOTAL, payload: total });
-    } catch (error) {
-      console.log(error);
-      toast.error(error);
+      let users = data.map((el) => ({ ...el, key: el._id }));
+      dispatch(updateState({ users, total }));
     } finally {
-      dispatch({ type: USER_LOADING, payload: false });
+      dispatch(updateState({ loading: false }));
     }
   };
+
+export const changePage = (page, search) => (dispatch) => {
+  dispatch(updateState({ activePage: page }));
+  dispatch(getUser(page, search));
 };
 
-export const changePage = (page) => {
-  return (dispatch) => {
-    dispatch({ type: USER_PAGE, payload: page });
-    dispatch(getUser(page));
-  };
+export const searchUser = (search) => (dispatch) => {
+  dispatch(updateState({ search }));
+  dispatch(getUser(1, search));
 };
 
-export const searchUser = (search) => {
-  return (dispatch) => {
-    dispatch({ type: USER_SEARCH, payload: search });
-    dispatch(getUser(1, search));
+export const controlModal = (payload) => (dispatch) => {
+  dispatch(updateState({ isModalOpen: payload }));
+};
+
+// export const uploadPhoto = (file) => async (dispatch) => {
+//   try {
+//     dispatch(updateState({ photoLoad: true }));
+//     let formData = new FormData();
+//     formData.append("file", file);
+//     const { data } = await request.post("auth/upload", formData);
+//     console.log(data);
+//     dispatch(updateState({ photoData: data }));
+//   } finally {
+//     dispatch(updateState({ photoLoad: false }));
+//   }
+// };
+
+export const sendUser =
+  ({ values, selected, activePage, search }) =>
+  async (dispatch) => {
+    try {
+      dispatch(updateState({ isModalLoading: true }));
+      selected === null
+        ? await request.post("user", values)
+        : await request.put(`user/${selected}`, values);
+      dispatch(updateState({ isModalOpen: false }));
+      dispatch(getUser(activePage, search));
+    } finally {
+      dispatch(updateState({ isModalLoading: false }));
+    }
   };
+
+export const editUser = (form, id) => async (dispatch) => {
+  try {
+    dispatch(
+      updateState({
+        selected: id,
+        isModalOpen: true,
+        photoLoad: true,
+        isModalLoading: true,
+      })
+    );
+    const { data } = await request.get(`user/${id}`);
+    dispatch(updateState({ photoData: data.photo }));
+    form.setFieldsValue(data);
+  } finally {
+    dispatch(updateState({ photoLoad: false, isModalLoading: false }));
+  }
+};
+
+export const deleteUser = (id, search) => async (dispatch) => {
+  await request.delete(`user/${id}`);
+  dispatch(getUser(1, search));
+  dispatch(updateState({ activePage: 1 }));
 };

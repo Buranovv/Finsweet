@@ -2,6 +2,7 @@ import foto from "../../../assets/images/hands.png";
 import foto2 from "../../../assets/images/friends.png";
 
 import "./style.scss";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const AboutPage = () => {
   return (
@@ -47,12 +48,12 @@ const AboutPage = () => {
             </p>
           </div>
           <div className="about-image">
-            <img src={foto} alt="" />
+            <LazyLoadImage effect="blur" src={foto} alt="" />
           </div>
         </div>
         <div className="about-footer">
           <div className="about-image">
-            <img src={foto2} alt="" />
+            <LazyLoadImage effect="blur" src={foto2} alt="" />
           </div>
           <div className="about-texts">
             <h2>Our team of creatives</h2>

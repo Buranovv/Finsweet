@@ -29,8 +29,6 @@ const AccountForm = () => {
           await request.put("auth/password", data);
           reset({ currentPassword: "", newPassword: "" });
           toast.success("Password changed!");
-        } catch (error) {
-          toast.error(error);
         } finally {
           setFormLoad(false);
         }

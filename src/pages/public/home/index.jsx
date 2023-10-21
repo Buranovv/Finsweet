@@ -6,7 +6,6 @@ import PopularPostsSlider from "../../../components/carousel/PopularPostsSlider"
 import CategorySlider from "../../../components/carousel/CategorySlider";
 import { Link } from "react-router-dom";
 import Loader from "../../../components/shared/loader";
-import { toast } from "react-toastify";
 
 const HomePage = () => {
   const [latestPost, setLatestPost] = useState({});
@@ -21,8 +20,6 @@ const HomePage = () => {
         const { data } = await request.get("post/lastone");
         setUserName(data.user.first_name + " " + data.user.last_name);
         setLatestPost(data);
-      } catch (error) {
-        toast.error(error);
       } finally {
         setLoading(false);
       }
@@ -52,7 +49,9 @@ const HomePage = () => {
                       By <span>{userName}</span> |{" "}
                       {`${date[0]} ${date[1]}, ${date[2]}`}
                     </p>
-                    <p className="hero__description">{description?.slice(0, 200)}...</p>
+                    <p className="hero__description">
+                      {description?.slice(0, 200)}...
+                    </p>
                   </div>
                 </div>
                 <Link to={`/${_id}`} className="hero__btn">

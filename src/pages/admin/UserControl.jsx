@@ -1,5 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -11,6 +10,7 @@ import {
   Modal,
   Space,
   Table,
+  // Upload,
 } from "antd";
 
 import {
@@ -18,28 +18,76 @@ import {
   SaveOutlined,
   EditOutlined,
   DeleteOutlined,
+  // LoadingOutlined,
+  // PlusOutlined,
 } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
-import { changePage, getUser, searchUser } from "../../redux/actions/user";
-import { getImg } from "../../utils";
+import {
+  changePage,
+  controlModal,
+  deleteUser,
+  editUser,
+  getUser,
+  searchUser,
+  sendUser,
+  updateState,
+  // uploadPhoto,
+} from "../../redux/actions/user";
+import { getUserImg } from "../../utils";
 import { LIMIT_TABLE } from "../../constants";
+// import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const UserControl = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
-  // const [photo, setPhoto] = useState(null);
-  const [isModalLoading, setIsModalLoading] = useState(false);
+
+  const {
+    users,
+    loading,
+    total,
+    activePage,
+    selected,
+    isModalLoading,
+    isModalOpen,
+    // photoLoad,
+    search,
+    // photoData,
+  } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    total === 0 && dispatch(getUser());
+  }, [dispatch, total]);
+
+  const showModal = () => {
+    form.resetFields();
+    dispatch(controlModal(true));
+    dispatch(updateState({ photoData: null, selected: null }));
+  };
+  const closeModal = () => {
+    dispatch(controlModal(false));
+  };
+
+  const handleOk = async () => {
+    let values = await form.validateFields();
+    // values.photo = photoData._id;
+    dispatch(sendUser({ values, selected, activePage, search }));
+  };
+
+  const mustDelete = (id) => {
+    Modal.confirm({
+      title: "Do you want to delete?",
+      onOk: () => {
+        dispatch(deleteUser(id, search));
+      },
+    });
+  };
+
   const columns = [
     {
       title: "Image",
       dataIndex: "photo",
       key: "photo",
       render: (photo, i) => {
-        const photoType = photo?.name?.split(".")[1];
-        const photoId = photo?._id;
-        const photo2 = `${photoId}.${photoType}`;
         const handleError = (error) => {
           error.target.src = "/icon.png";
         };
@@ -49,7 +97,7 @@ const UserControl = () => {
             key={i}
             height={50}
             onError={handleError}
-            src={getImg(photo2)}
+            src={getUserImg(photo)}
           />
         );
       },
@@ -75,59 +123,25 @@ const UserControl = () => {
       dataIndex: "_id",
       render: (id, i) => (
         <Space key={i} size="middle">
-          <Link to={`/userControl/${id}`}>
-            <Button type="dashed">See posts</Button>
-          </Link>
-          <Button type="primary" icon={<EditOutlined />}>
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => dispatch(editUser(form, id))}
+          >
             Edit
           </Button>
-          <Button icon={<DeleteOutlined />} danger type="primary">
+          <Button
+            icon={<DeleteOutlined />}
+            danger
+            type="primary"
+            onClick={() => mustDelete(id)}
+          >
             Delete
           </Button>
         </Space>
       ),
     },
   ];
-
-  const { users, loading, total, activePage } = useSelector(
-    (state) => state.user
-  );
-
-  useEffect(() => {
-    total === 0 && dispatch(getUser());
-  }, [dispatch, total]);
-
-  const showModal = () => {
-    form.resetFields();
-    setIsModalOpen(true);
-    setSelected(null);
-    setIsModalLoading(false);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const submit = async () => {
-    try {
-      let values = await form.validateFields();
-      // values.photo = photo;
-      // await request.post("category", values);
-      console.log(values);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // const uploadPhoto = async (e) => {
-  //   try {
-  //     let formData = new FormData();
-  //     formData.append("file", e.target.files["0"]);
-  //     const { data } = await request.post("upload", formData);
-  //     setPhoto(data._id);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };
 
   return (
     <Fragment>
@@ -163,7 +177,7 @@ const UserControl = () => {
               onClick={showModal}
               icon={<UserAddOutlined />}
             >
-              Add category
+              Add user
             </Button>
           </Flex>
         )}
@@ -177,7 +191,7 @@ const UserControl = () => {
           total={total}
           pageSize={LIMIT_TABLE}
           current={activePage}
-          onChange={(page) => dispatch(changePage(page))}
+          onChange={(page) => dispatch(changePage(page, search))}
         />
       ) : null}
       <Modal
@@ -187,7 +201,7 @@ const UserControl = () => {
           icon: selected === null ? <UserAddOutlined /> : <SaveOutlined />,
         }}
         open={isModalOpen}
-        onOk={submit}
+        onOk={handleOk}
         onCancel={closeModal}
         maskClosable={false}
         confirmLoading={isModalLoading}
@@ -203,6 +217,32 @@ const UserControl = () => {
           autoComplete="off"
           form={form}
         >
+          {/* <Upload
+            name="photo"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            onChange={(e) => dispatch(uploadPhoto(e.file.originFileObj))}
+          >
+            <div>
+              {photoLoad ? (
+                <LoadingOutlined />
+              ) : photoData ? (
+                <LazyLoadImage
+                  effect="blur"
+                  src={getUserImg(photoData)}
+                  alt="avatar"
+                  style={{ width: "100%" }}
+                />
+              ) : (
+                <div>
+                  <PlusOutlined />
+                  <div>upload</div>
+                </div>
+              )}
+            </div>
+          </Upload> */}
+
           <Form.Item
             label="First_name"
             name="first_name"
@@ -241,6 +281,21 @@ const UserControl = () => {
           >
             <Input />
           </Form.Item>
+
+          {selected === null ? (
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+          ) : null}
         </Form>
       </Modal>
     </Fragment>

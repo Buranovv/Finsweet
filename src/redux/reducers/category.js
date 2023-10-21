@@ -1,10 +1,4 @@
-import {
-  CATEGORY_FETCHING,
-  CATEGORY_LOADING,
-  CATEGORY_PAGE,
-  CATEGORY_SEARCH,
-  CATEGORY_TOTAL,
-} from "../types/category";
+import { CATEGORY_CONTROL } from "../types/category";
 
 const initialState = {
   categories: [],
@@ -12,20 +6,17 @@ const initialState = {
   activePage: 1,
   loading: false,
   search: "",
+  isModalOpen: false,
+  selected: null,
+  isModalLoading: false,
+  photoLoad: false,
+  photoData: null,
 };
 
 const categoryReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case CATEGORY_LOADING:
-      return { ...state, loading: payload };
-    case CATEGORY_FETCHING:
-      return { ...state, categories: payload };
-    case CATEGORY_TOTAL:
-      return { ...state, total: payload };
-    case CATEGORY_PAGE:
-      return { ...state, activePage: payload };
-    case CATEGORY_SEARCH:
-      return { ...state, search: payload };
+    case CATEGORY_CONTROL:
+      return { ...state, ...payload };
   }
 
   return state;

@@ -33,6 +33,7 @@ const DashboardPage = () => {
       key: "total",
     },
   ];
+  
   const data = [
     {
       section: "Categories",

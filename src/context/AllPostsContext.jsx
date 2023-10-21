@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import request from "../server";
 import { LIMIT } from "../constants";
-import { toast } from "react-toastify";
 
 export const AllPostsContext = createContext();
 
@@ -18,41 +17,33 @@ const AllPostsContextProvider = ({ children }) => {
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    try {
-      const getAllPosts = async () => {
-        const {
-          data: { data: data1, pagination },
-        } = await request.get(
-          `post?limit=${LIMIT}&${search ? `search=${search}` : ""}`
-        );
+    const getAllPosts = async () => {
+      const {
+        data: { data: data1, pagination },
+      } = await request.get(
+        `post?limit=${LIMIT}&${search ? `search=${search}` : ""}`
+      );
 
-        setPhotoId(data1.photo?._id);
-        setPhotoName(data1?.photo?.name);
-        setCtgrName(data1.category?.name);
-        setPosts(data1);
-        setPage(pagination.next);
-        setTotal(pagination.total);
-      };
-      getAllPosts();
-    } catch (error) {
-      toast.error(error);
-    }
+      setPhotoId(data1.photo?._id);
+      setPhotoName(data1?.photo?.name);
+      setCtgrName(data1.category?.name);
+      setPosts(data1);
+      setPage(pagination.next);
+      setTotal(pagination.total);
+    };
+    getAllPosts();
   }, [search]);
 
   const refetchData = async () => {
     if (posts.length < total) {
-      try {
-        const {
-          data: { data: data1, pagination },
-        } = await request.get(
-          `post?limit=${LIMIT}&page=${page}&${search ? `search=${search}` : ""}`
-        );
+      const {
+        data: { data: data1, pagination },
+      } = await request.get(
+        `post?limit=${LIMIT}&page=${page}&${search ? `search=${search}` : ""}`
+      );
 
-        setPosts([...posts, ...data1]);
-        setPage(pagination.next);
-      } catch (error) {
-        toast.error(error);
-      }
+      setPosts([...posts, ...data1]);
+      setPage(pagination.next);
     } else {
       setHasMore(false);
     }

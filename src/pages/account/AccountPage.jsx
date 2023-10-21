@@ -1,13 +1,12 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { AiOutlineUpload } from "react-icons/ai";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/shared/loader";
-import { getImg } from "../../utils";
+import { getUserImg } from "../../utils";
 import dayjs from "dayjs";
 import request from "../../server";
 import AccountForm from "./AccountForm";
@@ -15,6 +14,7 @@ import AccountForm from "./AccountForm";
 import "../public/auth/style.scss";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
+import { Upload } from "antd";
 
 const AccountPage = () => {
   const navigate = useNavigate();
@@ -59,8 +59,6 @@ const AccountPage = () => {
       await request.put("auth/details", values);
       getUser();
       toast.success("Changes saved!");
-    } catch (error) {
-      toast.error(error);
     } finally {
       setFormLoad(false);
     }
@@ -73,8 +71,6 @@ const AccountPage = () => {
       formData.append("file", e.target.files["0"]);
       await request.post("auth/upload", formData);
       getUser();
-    } catch (error) {
-      toast.error(error);
     } finally {
       setPhotoLoad(false);
     }
@@ -103,12 +99,39 @@ const AccountPage = () => {
             onSubmit={handleSubmit(save)}
           >
             <div className="account__img-box">
-              <label htmlFor="img" className="account__img">
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                className="avatar-uploader"
+                onChange={uploadPhoto}
+              >
+                <div>
+                  {photoLoad ? (
+                    <LoadingOutlined />
+                  ) : photo ? (
+                    <LazyLoadImage
+                      src={getUserImg(photo)}
+                      effect="blur"
+                      alt="avatar"
+                      style={{
+                        width: "100%",
+                      }}
+                    />
+                  ) : (
+                    <div>
+                      <PlusOutlined />
+                      <div>upload</div>
+                    </div>
+                  )}
+                </div>
+              </Upload>
+
+              {/* <label htmlFor="img" className="account__img">
                 {photo ? (
                   <LazyLoadImage
                     effect="blur"
                     style={{ width: "100%", height: "100%" }}
-                    src={getImg(photo)}
+                    src={getUserImg(photo)}
                   />
                 ) : (
                   <Fragment>
@@ -122,7 +145,7 @@ const AccountPage = () => {
                 type="file"
                 id="img"
                 onChange={uploadPhoto}
-              />
+              /> */}
             </div>
             {loading ? (
               <Loader />

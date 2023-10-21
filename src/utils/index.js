@@ -1,8 +1,16 @@
 import { IMG_URL } from "../constants";
 import request from "../server";
 
-export const getImg = (photo) => {
+export const getUserImg = (photo) => {
   return `${IMG_URL}${photo}`;
+};
+
+export const getImg = (photo) => {
+  const photoType = photo?.name?.split(".")[1];
+  const photoId = photo?._id;
+  const realPhoto = `${photoId}.${photoType}`;
+
+  return `${IMG_URL}${realPhoto}`;
 };
 
 export const getSingleData = async (url, id) => {

@@ -1,18 +1,17 @@
-import { toast } from "react-toastify";
 import request from "../../server";
-import {
-  COMMENT_FETCHING,
-  COMMENT_LOADING,
-  COMMENT_PAGE,
-  COMMENT_SEARCH,
-  COMMENT_TOTAL,
-} from "../types/comment";
+import { COMMENT_CONTROL } from "../types/comment";
 import { LIMIT_TABLE } from "../../constants";
 
-export const getComment = (page = 1, search = "") => {
-  return async (dispatch) => {
+export const updateState = (payload) => ({
+  type: COMMENT_CONTROL,
+  payload,
+});
+
+export const getComment =
+  (page = 1, search = "") =>
+  async (dispatch) => {
     try {
-      dispatch({ type: COMMENT_LOADING, payload: true });
+      dispatch(updateState({ loading: true }));
       const {
         data: {
           data,
@@ -21,27 +20,64 @@ export const getComment = (page = 1, search = "") => {
       } = await request.get("comment", {
         params: { page, limit: LIMIT_TABLE, search },
       });
-      dispatch({ type: COMMENT_FETCHING, payload: data });
-      dispatch({ type: COMMENT_TOTAL, payload: total });
-    } catch (error) {
-      console.log(error);
-      toast.error(error);
+      let comments = data.map((el) => ({ ...el, key: el._id }));
+      dispatch(updateState({ comments, total }));
     } finally {
-      dispatch({ type: COMMENT_LOADING, payload: false });
+      dispatch(updateState({ loading: false }));
     }
   };
-};
 
-export const changePage = (page) => {
+export const changePage = (page, search) => {
   return (dispatch) => {
-    dispatch({ type: COMMENT_PAGE, payload: page });
-    dispatch(getComment(page));
+    dispatch(updateState({ activePage: page }));
+    dispatch(getComment(page, search));
   };
 };
 
 export const searchComment = (search) => {
   return (dispatch) => {
-    dispatch({ type: COMMENT_SEARCH, payload: search });
+    dispatch(updateState({ search }));
     dispatch(getComment(1, search));
   };
+};
+
+export const controlModal = (payload) => (dispatch) => {
+  dispatch(updateState({ isModalOpen: payload }));
+};
+
+export const sendComment =
+  ({ values, selected, activePage, search }) =>
+  async (dispatch) => {
+    try {
+      dispatch(updateState({ isModalLoading: true }));
+      selected === null
+        ? await request.post("comment", values)
+        : await request.put(`comment/${selected}`, values);
+      dispatch(updateState({ isModalOpen: false }));
+      dispatch(getComment(activePage, search));
+    } finally {
+      dispatch(updateState({ isModalLoading: false }));
+    }
+  };
+
+export const editComment = (form, id) => async (dispatch) => {
+  try {
+    dispatch(
+      updateState({
+        selected: id,
+        isModalOpen: true,
+        isModalLoading: true,
+      })
+    );
+    const { data } = await request.get(`comment/${id}`);
+    form.setFieldsValue(data);
+  } finally {
+    dispatch(updateState({ isModalLoading: false }));
+  }
+};
+
+export const deleteComment = (id, search) => async (dispatch) => {
+  await request.delete(`comment/${id}`);
+  dispatch(getComment(1, search));
+  dispatch(updateState({ activePage: 1 }));
 };
