@@ -1,16 +1,17 @@
 import { Fragment, useEffect, useState } from "react";
 
-import "./style.scss";
 import request from "../../../server";
 import PopularPostsSlider from "../../../components/carousel/PopularPostsSlider";
 import CategorySlider from "../../../components/carousel/CategorySlider";
 import { Link } from "react-router-dom";
 import Loader from "../../../components/shared/loader";
+import { getImg } from "../../../utils";
+import "./style.scss";
 
 const HomePage = () => {
   const [latestPost, setLatestPost] = useState({});
   const [userName, setUserName] = useState("");
-  const { title, description, createdAt, _id } = latestPost;
+  const { title, description, createdAt, _id, photo } = latestPost;
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -32,7 +33,10 @@ const HomePage = () => {
 
   return (
     <Fragment>
-      <section className="hero">
+      <section
+        className="hero"
+        style={{ backgroundImage: `url(${getImg(photo)})` }}
+      >
         <div className="container">
           <div>
             {loading ? (
