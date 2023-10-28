@@ -122,7 +122,11 @@ const MyPostsPage = () => {
     try {
       setFormLoad(true);
       let { data } = await request.get(`post/${id}`);
-      reset(data);
+      const newData = {
+        ...data,
+        category: data?.category?._id,
+      };
+      reset(newData);
     } finally {
       setFormLoad(false);
     }
@@ -143,8 +147,9 @@ const MyPostsPage = () => {
             placeholder="Searching ..."
             onChange={handleSearch}
           />
-          <button type="submit"></button>
-          <button onClick={openModal}>Add post</button>
+          <button type="button" onClick={openModal}>
+            Add post
+          </button>
         </form>
         <div className="posts__box">
           <InfiniteScroll
