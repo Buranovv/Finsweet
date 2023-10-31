@@ -104,6 +104,7 @@ const AccountPage = () => {
                 listType="picture-card"
                 className="avatar-uploader"
                 onChange={uploadPhoto}
+                showUploadList={false}
               >
                 <div>
                   {photoLoad ? (
